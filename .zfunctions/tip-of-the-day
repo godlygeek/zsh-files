@@ -1,0 +1,10 @@
+#autoload
+
+function tip-of-the-day() {
+  printf "GET /wiki/Special:Random HTTP/1.0\r\nHost: vim.wikia.com\r\n\r\n" \
+    | nc vim.wikia.com 80 \
+    | sed -n '/Location: \(.*\)\/wiki\/\(.*\)/s//\1\/index.php?action=render\&title=\2/p' \
+    | xargs w3m -dump
+}
+
+# vim:ft=zsh

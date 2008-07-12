@@ -1,0 +1,63 @@
+# Created by icetrey <trey@imagin.net>
+# Added by Spidey 08/06
+# Converted to zsh prompt theme by <adam@spiers.net>
+
+prompt_elite2_help () {
+  cat <<EOH
+This prompt is color-scheme-able.  You can invoke it thus:
+
+  prompt elite2 [<text-color> [<parentheses-color>]]
+
+The default colors are both cyan.  This theme works best with a dark
+background.
+
+Recommended fonts for this theme: nexus or vga or similar.  If you
+don't have any of these, the 8-bit characters will probably look stupid.
+EOH
+}
+
+prompt_elite2_setup () {
+  local text_col=${1:-'cyan'}
+  local parens_col=${2:-$text_col}
+
+  #for code in 332 304 300; do
+  #  local char_$code=$(echo -n "\\0$code")
+  #done
+
+  local char_332="̲┌"
+  local char_262="─"
+  local char_261="├"
+  local char_260="┬"
+
+  local text="%{$fg_no_bold[$text_col]%}"
+  local parens="%{$fg_bold[$parens_col]%}"
+  local punct="%{$fg_bold[grey]%}"
+  local reset="%{$reset_color%}"
+
+  local lpar="$parens($text"
+  local rpar="$parens)$text"
+
+  PS1="$punct$char_332$text$char_304$lpar%n$punct@$text%m$rpar$char_304$lpar%!$punct/$text%y$rpar$char_304$lpar%D{%I:%M%P}$punct:$text%D{%m/%d/%y}$rpar$char_304$punct-$reset$prompt_newline$punct$char_300$text$char_304$lpar%#$punct:$text%~$rpar$char_304$punct-$reset " 
+
+  PS2="$parens$char_304$text$char_304$punct-$reset "
+
+  precmd () { setopt promptsubst }
+  preexec () { }
+}
+
+prompt_elite2_preview () {
+  local color colors
+  colors=(red yellow green blue magenta)
+
+  if (( ! $#* )); then
+    for (( i = 1; i <= $#colors; i++ )); do
+      color=$colors[$i]
+      prompt_preview_theme elite2 $color
+      (( i < $#colors )) && print
+    done
+  else
+    prompt_preview_theme elite2 "$@"
+  fi
+}
+
+prompt_elite2_setup "$@"

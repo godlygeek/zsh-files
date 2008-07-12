@@ -1,0 +1,24 @@
+bindkey -v
+
+function my-accept-line {
+  POSTDISPLAY=""
+  zle .accept-line
+}
+zle -N my-accept-line
+bindkey "^M" my-accept-line
+bindkey "^J" my-accept-line
+
+setopt prompt_subst;
+PS1=$'%{\e7\e[${COLUMNS}G \e[K-- INSERT --\e8\e[B\e[A%}'"$PS1"
+PS2=$'%{\e7\e[${COLUMNS}G \e[K-- INSERT --\e8\e[B\e[A%}'"$PS2"
+PS3=$'%{\e7\e[${COLUMNS}G \e[K-- INSERT --\e8\e[B\e[A%}'"$PS3"
+PS4=$'%{\e7\e[${COLUMNS}G \e[K-- INSERT --\e8\e[B\e[A%}'"$PS4"
+
+function zle-keymap-select {
+  if [[ "$KEYMAP" == vicmd ]]; then
+    POSTDISPLAY=$'\n'"-- NORMAL --"
+  else
+    POSTDISPLAY=$'\n'"-- INSERT --"
+  fi
+}
+zle -N zle-keymap-select

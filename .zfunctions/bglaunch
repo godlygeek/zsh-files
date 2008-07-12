@@ -1,0 +1,18 @@
+# autoload
+
+function bglaunch {
+  while [ 1 ]; do
+    #local count=0; # Number of running jobs
+    #for val in ${(v)jobstates}; do
+    #  [[ "$val" != (done*) ]] && let 'count++'
+    #done
+    local count=${#jobstates}
+    [[ $ct < 8 ]] && echo "$count jobs, adding another" && break;
+    jobs
+    sleep 2
+  done
+  $@ &
+  sleep 2
+}
+
+# vim:ft=zsh

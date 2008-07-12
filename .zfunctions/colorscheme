@@ -1,0 +1,115 @@
+#autoload
+
+# Provides a function that Allows one to switch the colorscheme in an xterm or
+# rxvt, or possibly other terminal emulators, on the fly.  Takes one argument,
+# the name of a colorscheme to use.  If no arguments are provided, prints out
+# a usage message.
+
+function colorscheme {
+  if [ -n "$STY" ]; then
+    # Running inside gnu screen - Modify escape codes to be passed through to
+    # the parent terminal of the session.
+    local prefix="\eP"
+    local suffix="\e\\"
+  fi
+
+
+  case $1 in
+    light)
+      # A light, black-on-grey colorscheme
+      local bgcolor="#EEEEEE"
+      local fgcolor="#000000"
+      local crcolor="rgb:8080/8080/c0c0" # Cursor color
+      local color0="#000000"  #Black
+      local color1="#E14B4B"  #Red
+      local color2="#32C832"  #green
+      local color3="#BBBB00"  #yellow
+      local color4="#3030FF"  #dark blue
+      local color5="#903090"  #magenta
+      local color6="#28B4B4"  #cyan
+      local color7="#B4B4B4"  #gray
+      local color8="#555555"  #light grey
+      local color9="#FF5555"  #light red
+      local color10="#5FAF00" #light green
+      local color11="#FFFF55" #light yellow
+      local color12="#0000AF" #light blue
+      local color13="#FF55FF" #light magenta
+      local color14="#55FFFF" #light cyan
+      local color15="#FFFFFF" #bright white
+      ;;
+    dark)
+      # A dark, grey-on-black colorscheme
+      local bgcolor="rgb:0000/0000/0000"  # Was rgb:0808/0808/0808
+      local fgcolor="rgb:bcbc/bcbc/bcbc"  # Was rgb:8080/8080/8080
+      local crcolor="rgb:8080/8080/c0c0"
+      local color0="rgb:0000/0000/0000"
+      local color1="rgb:9e9e/1818/2828"
+      local color2="rgb:aeae/cece/9292"
+      local color3="rgb:9696/8a8a/3838"
+      local color4="rgb:0000/0000/d7d7"
+      local color5="rgb:9696/3c3c/5959"
+      local color6="rgb:4141/8181/7979"
+      local color7="rgb:9e9e/9e9e/9e9e"
+      local color8="rgb:6c6c/6c6c/6c6c"
+      local color9="rgb:cfcf/6161/7171"
+      local color10="rgb:0000/8787/0000"
+      local color11="rgb:ffff/f7f7/9696"
+      local color12="rgb:5f5f/5f5f/ffff"
+      local color13="rgb:8787/5f5f/8787"
+      local color14="rgb:0000/8787/8787"
+      local color15="rgb:ffff/ffff/ffff"
+      ;;
+    matrix)
+      # A dark, green-on-black colorscheme
+      local bgcolor="rgb:0808/0808/0808"
+      local fgcolor="rgb:0000/5f5f/0000"
+      local crcolor="rgb:8080/c0c0/8080"
+      local color0="rgb:0000/0000/0000"
+      local color1="rgb:8787/8787/5f5f"
+      local color2="rgb:0000/ffff/0000"
+      local color3="rgb:afaf/d7d7/8787"
+      local color4="rgb:0000/0000/d7d7"
+      local color5="rgb:8787/5f5f/5f5f"
+      local color6="rgb:0000/d7d7/afaf"
+      local color7="rgb:9e9e/9e9e/9e9e"
+      local color8="rgb:6c6c/6c6c/6c6c"
+      local color9="rgb:5f5f/5f5f/0000"
+      local color10="rgb:0000/a3a3/0000"
+      local color11="rgb:ffff/f7f7/9696"
+      local color12="rgb:0000/afaf/8787"
+      local color13="rgb:5f5f/8787/5f5f"
+      local color14="rgb:0000/8787/8787"
+      local color15="rgb:ffff/ffff/ffff"
+      ;;
+    *)
+      echo "$1: Invalid selection.  Valid colorschemes are:"
+      which $0 | grep "^[^(]*[^*(])" | sed 's/\s*\([^)]*\)).*/\1/g' 
+      return;
+      ;;
+  esac
+
+  echo -n -e "$prefix\e]10;$fgcolor\007$suffix" # Xterm fg
+  echo -n -e "$prefix\e]11;$bgcolor\007$suffix" # Xterm bg
+  echo -n -e "$prefix\e]39;$fgcolor\007$suffix" # rxvt fg
+  echo -n -e "$prefix\e]49;$bgcolor\007$suffix" # rxvt bg
+  echo -n -e "$prefix\e]12;$crcolor\007$suffix"
+  echo -n -e "$prefix\e]4;0;$color0\007$suffix"
+  echo -n -e "$prefix\e]4;1;$color1\007$suffix"
+  echo -n -e "$prefix\e]4;2;$color2\007$suffix"
+  echo -n -e "$prefix\e]4;3;$color3\007$suffix"
+  echo -n -e "$prefix\e]4;4;$color4\007$suffix"
+  echo -n -e "$prefix\e]4;5;$color5\007$suffix"
+  echo -n -e "$prefix\e]4;6;$color6\007$suffix"
+  echo -n -e "$prefix\e]4;7;$color7\007$suffix"
+  echo -n -e "$prefix\e]4;8;$color8\007$suffix"
+  echo -n -e "$prefix\e]4;9;$color9\007$suffix"
+  echo -n -e "$prefix\e]4;10;$color10\007$suffix"
+  echo -n -e "$prefix\e]4;11;$color11\007$suffix"
+  echo -n -e "$prefix\e]4;12;$color12\007$suffix"
+  echo -n -e "$prefix\e]4;13;$color13\007$suffix"
+  echo -n -e "$prefix\e]4;14;$color14\007$suffix"
+  echo -n -e "$prefix\e]4;15;$color15\007$suffix"
+  export COLORSCHEME=$1
+}
+
+# vim:ft=zsh

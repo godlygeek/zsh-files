@@ -1,0 +1,38 @@
+#autoload
+
+# Hacked to pieces version of Adam Spiers <adam@spiers.net> run_hooks function
+# that will better suit my needs.  Given a directory, this function will first
+# source every file in it that does not match an ignore pattern.  Then, it will
+# analyze subdirectories, and for each subdirectory whose name contains an
+# equals sign, it will check to see if the left side of the equals sign,
+# evaluated as an environment variable, equals the right side, and if it does,
+# or if the directory name does not contain an equals sign, it will recurse
+# into that directory.
+
+ignore () {
+  [[ $1 == (*~) || $1 == (*.zwc) || $1 == (*.zwc.old) ]]
+}
+
+run-hooks () {
+  local nullglob_save=${options[nullglob]}
+  options[nullglob]=on
+
+  [[ $# != 1 ]] &&
+    { echo "run-hooks: You must specify a directory to read!" 2>&1 ; return }
+  [[ ! -d $1 ]] &&
+    { echo "run-hooks: '$1' is not a directory!" 2>&1 ; return }
+  local root file directory
+  [[ $1 == (/*) ]] && root=$1 || root=$ZDOTDIR/$1
+  for file in $root/*(.); do
+    ignore $file || source $file
+  done
+  for directory in $root/*(/); do
+    [[ ${directory##*/} != (*=*) || "${(e):-\$${${directory##*/}%%\=*}}" == "${directory##*\=}" ]] && run-hooks "$directory"
+  done
+
+  options[nullglob]=$nullglob_save
+}
+
+run-hooks $@
+
+# vim:ft=zsh

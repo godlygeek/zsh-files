@@ -1,0 +1,10 @@
+# autoload
+
+function mplayer {
+  brightness=$(brightness get)
+  xset -dpms
+  brightness set "$brightness"
+  mplayer "$@"
+}
+
+# vim:ft=zsh
