@@ -54,6 +54,15 @@ function booleancheck {
   [[ -n "$1" && "$1" == (1|[Yy]([Ee][Ss]|)|[Tt]([Rr][Uu][Ee]|)) ]]
 }
 
+# Performs the same job as pidof, using only zsh capabilities
+function pids {
+  local i
+  for i in /proc/<->/stat
+  do
+    [[ "$(< $i)" = *\((${(j:|:)~@})\)* ]] && echo $i:h:t
+  done
+}
+
 # Replaces the current window title in Gnu Screen with its positional parameters
 function set-screen-title {
   echo -n "\ek$*\e\\"
