@@ -1,4 +1,4 @@
-#!/bin/posh
+#!/bin/sh
 
 # Requires GNU Coreutils for stat(1) and perl for relative paths
 # Works with posh, should work with any POSIX-compliant shell
