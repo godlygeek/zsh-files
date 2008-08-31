@@ -553,7 +553,7 @@ function precmd {
 PROMPT_COLOR_NUM=$(((${#${HOST#*.}}+11)%12))
 
 function prompt-setup {
-  local CC=$'\e''['"$((PROMPT_COLOR_NUM>6))"'m'$'\e''[3'"$((PROMPT_COLOR_NUM%6+1))"'m'
+  local CC=$'\e['$((PROMPT_COLOR_NUM>6))$'m\e[3'$((PROMPT_COLOR_NUM%6+1))'m'
   if booleancheck "$shellopts[titlebar]" ; then
     # Can set titlebar, so sparse prompt: 'blue(shortpath)'
     # <blue bright=1><truncate side=right len=20 string="..">
@@ -569,7 +569,7 @@ function prompt-setup {
 }
 
 function rprompt-setup {
-  local CC=$'\e''['"$((PROMPT_COLOR_NUM>6))"'m'$'\e''[3'"$((PROMPT_COLOR_NUM%6+1))"'m'
+  local CC=$'\e['$((PROMPT_COLOR_NUM>6))$'m\e[3'$((PROMPT_COLOR_NUM%6+1))'m'
   # Right side prompt: '[(red)ERRORS]{(yellow)jobs}(blue)time'
   # in perl pseudocode this time, since html doesn't have a ternary operator...
   # "<red>$psvar[3]</red> "
