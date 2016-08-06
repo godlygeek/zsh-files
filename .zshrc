@@ -660,7 +660,7 @@ function setup-keychain {
   whence -p ssh-agent &>/dev/null || return 0
 
   # Or if we don't have any public keys...
-  set -- ~/.ssh/id_[rd]sa(N)
+  set -- ~/.ssh/*.pub(N)
   [ $# -eq 0 ] && return 0
 
   # Otherwise, we can try starting a new agent.
