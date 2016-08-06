@@ -628,6 +628,14 @@ function load-agent-vars {
   [ -r ~/.keychain/"$HOST".sh ] && . ~/.keychain/"$HOST".sh
 }
 
+function ssh-add {
+  if (( $# )); then
+    command ssh-add "$@"
+  else
+    command ssh-add ~/.ssh/*.pub(e:'reply=(${REPLY%.pub})':)
+  fi
+}
+
 # Functions to wrap commands that would like a working keychain
 function ssh scp svn {
   setup-keychain; command "$0" "$@"
