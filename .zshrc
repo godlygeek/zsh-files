@@ -395,16 +395,17 @@ which dircolors &>/dev/null && eval `dircolors -b $HOME/.dircolors`
 autoloadable colorscheme && autoload -U colorscheme
 
 if [[ -z "$COLORSCHEME" ]]; then
-  function PickScheme() {
-    local xprop="$(xprop WM_CLASS -id $WINDOWID 2>/dev/null)"
-    (( $? == 0 )) && [[ -n "$xprop" ]] || return
-    if [[ "$xprop" == (WM_CLASS\(STRING\) = \"fxterm\", \"*\") ]]; then
-      colorscheme light
-    else
-      colorscheme dark
-    fi
-  }
-  PickScheme
+  #function PickScheme() {
+  #  local xprop="$(xprop WM_CLASS -id $WINDOWID 2>/dev/null)"
+  #  (( $? == 0 )) && [[ -n "$xprop" ]] || return
+  #  if [[ "$xprop" == (WM_CLASS\(STRING\) = \"fxterm\", \"*\") ]]; then
+  #    colorscheme light
+  #  else
+  #    colorscheme dark
+  #  fi
+  #}
+  #PickScheme
+  colorscheme light
 fi
 
 
