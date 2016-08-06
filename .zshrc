@@ -637,7 +637,7 @@ function ssh-add {
 }
 
 # Functions to wrap commands that would like a working keychain
-function ssh scp svn {
+function ssh scp svn git {
   setup-keychain; command "$0" "$@"
 }
 
