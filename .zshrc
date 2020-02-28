@@ -475,6 +475,16 @@ fi
 
 typeset +x PS1     # Don't export PS1 - Other shells just mangle it.
 
+if autoloadable vcs_info; then
+    autoload -Uz vcs_info
+fi
+
+setopt prompt_subst
+
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:*' actionformats '%F{magenta}|%b%F{yellow}(%a)%F{magenta}|%f '
+zstyle ':vcs_info:*' formats '%F{magenta}|%b|%f '
+
 #### Preexec is run after a command line is read, before the command is executed
 # We use it to inform the prompt that error messages should once again be
 # shown, and to set the screen name / titlebar text based on the command line,
@@ -516,6 +526,9 @@ function precmd {
   else
     psvar[3]=""
   fi
+
+  type vcs_info &>/dev/null && vcs_info
+
   shownexterr=0;
 
   if booleancheck "$shellopts[titlebar]" ; then
@@ -535,32 +548,33 @@ function precmd {
 #### Prompt setup functions
 # Global color variable
 PROMPT_COLOR_NUM=$(((${#${HOST#*.}}+11)%12))
+PROMPT_COLOR='%F{'$((PROMPT_COLOR_NUM%6+1))'}'
+(( PROMPT_COLOR_NUM > 6 )) && PROMPT_COLOR="%B$PROMPT_COLOR"
+unset PROMPT_COLOR_NUM
 
 function prompt-setup {
-  local CC=$'\e['$((PROMPT_COLOR_NUM>6))$'m\e[3'$((PROMPT_COLOR_NUM%6+1))'m'
   if booleancheck "$shellopts[titlebar]" ; then
     # Can set titlebar, so sparse prompt: 'blue(shortpath)'
     # <blue bright=1><truncate side=right len=20 string="..">
     #   pwd (home=~, only print trailing component)</truncate>&gt;</blue>
-    PS1=$'%{'"$CC"$'%}%20>..>%1~%>>>%{\e[0m%}'
+    PS1=$'$PROMPT_COLOR%20>..>%1~%>>>%f%b'
   else
     # No titlebar, so verbose prompt: 'white(Hostname)default(::)blue(fullpath)'
     # Explained in pseudo-html:
     # <white bright=1>non-FQDN hostname</white>::<blue bright=1>
     #  <truncate side=left len=33 string="..">pwd (home=~)</truncate>&gt;</blue>
-    PS1=$'%{\e[1;37m%}%m%{\e[0m%}::%{'"$CC"$'%}%35<..<%~%<<>%{\e[0m%}'
+    PS1=$'%{\e[1;37m%}%m%{\e[0m%}::$PROMPT_COLOR%35<..<%~%<<>%f%b'
   fi
 }
 
 function rprompt-setup {
-  local CC=$'\e['$((PROMPT_COLOR_NUM>6))$'m\e[3'$((PROMPT_COLOR_NUM%6+1))'m'
   # Right side prompt: '[(red)ERRORS]{(yellow)jobs}(blue)time'
   # in perl pseudocode this time, since html doesn't have a ternary operator...
   # "<red>$psvar[3]</red> "
   #   . ( $psvar[4] ? "<yellow>{" . $psvar[4] ."} </yellow> : '' )
   #     . "<blue bright=1>" . strftime("%L:%M:%S") . "<blue>"
   if booleancheck "$shellopts[rprompt]" ; then
-    RPS1=$'%{\e[0;31m%}%3v%{\e[0m%} %(4v.%{\e[33m%}{%4v}%{\e[0m%} .)%{'"$CC"$'%}<%D{%L:%M:%S}%{\e[0m%}'
+    RPS1=$'%F{1}%3v%f %(4v.%F{3}{%4v}%f .)${vcs_info_msg_0_}$PROMPT_COLOR<%D{%L:%M:%S}%f%b'
   else
     RPS1=""
   fi
