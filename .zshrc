@@ -435,10 +435,10 @@ zstyle ':completion:*' menu select=2
 # vi or vim will match first files that don't end in a backup extension,
 # followed by files that do, followed last by files that are known to be binary
 # types that should probably not be edited.
-zstyle ':completion:*:*:(vi|vim):*:*' \
-    file-patterns '*~(*.o|*~|*.old|*.bak|*.pro|*.zwc|*.swp):regular-files' \
-                  '(*~|*.bak|*.old):backup-files' \
-                  '(*.o|*.pro|*.zwc|*.swp):hidden-files'
+zstyle ':completion:*:*:(vi|vim):*:*' file-patterns \
+    '*~(*.o|*~|*.old|*.bak|*.pro|*.zwc|*.swp):regular-files' \
+    '(*~|*.bak|*.old):backup-files' \
+    '(*.o|*.pro|*.zwc|*.swp):hidden-files'
 
 # Use colors in tab completion listings
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
