@@ -151,7 +151,7 @@ function set-title-by-cmd-impl {
 # Xterm, URxvt, Rxvt, aterm, mlterm, Eterm, and dtterm can set the titlebar
 # TODO So can quite a few other terminal emulators...  If I'm missing a
 # terminal emulator that you know can set the titlebar, please let me know.
-[[ -n "$STY" || "$TERM" == ((x|a|ml|dt|E)term*|(u|)rxvt*|screen*) ]] || shellopts[titlebar]=0
+[[ -n "$STY" || "$TERM" == ((x|a|ml|dt|E)term*|(u|)rxvt*|screen*|putty*) ]] || shellopts[titlebar]=0
 
 # TODO Should probably check terminal emulator really is using unicode...
 # [[ TEST IF UNICODE WORKS ]] || shellopts[utf8]=0
