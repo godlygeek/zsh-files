@@ -1,32 +1,21 @@
-### Development Environment Setup
-[ -f "/app/dpc_dev/developer_env.sh" ] && source /app/dpc_dev/developer_env.sh
-### Path
-#### Superuser Paths
-# A list of hostnames that you expect to grant you sudo.
-HOSTS_WITH_SUDO=( SpyderByte Arachnotron )
+setup_path()
+{
+  # Prune out any directories in $PATH that don't exist
+  local i
 
-# Add superuser paths to PATH on machines where we have sudo
-for host in $HOSTS_WITH_SUDO; do
-  if [[ "$host" == "${HOST%%.*}" ]]; then
-    path=($path /usr/sbin /sbin /usr/local/sbin)
-    break
-  fi
-done
+  for ((i = $#path; i >= 1; --i)) {
+    [ -d "$path[i]" ] || path[i]=()
+  }
 
-# Best not let anyone else know where we have sudo, eh?
-unset HOSTS_WITH_SUDO
+  # Add some directories that belong even if they don't exist yet
+  path=(~/$(uname -s)/bin ~/bin /opt/bb/bin /opt/bin $path)
 
-#### User paths
-# If path doesn't contain $HOME/bin, add it.  Be careful what you put there:
-# It's earlier in the path search than any other directory!
-if [ -d ~/bin ]; then
-  PATH=~/bin:$PATH
-  MANPATH=~/man:$MANPATH
-  INFOPATH=~/info:$INFOPATH
-fi
+  # Remove any duplicates
+  typeset -Ug path
+}
 
-if [ -d /opt/bin ]; then
-  PATH=$PATH:/opt/bin
-  MANPATH=$MANPATH:/opt/man
-  INFOPATH=$INFOPATH:/opt/info
-fi
+setup_path
+# And fix up manpath
+export MANPATH="$MANPATH:"${PATH//bin/man}:${PATH//bin/share/man}
+
+[ -d /opt/bb/share/terminfo/ ] && export TERMINFO=/opt/bb/share/terminfo
