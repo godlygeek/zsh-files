@@ -681,6 +681,8 @@ autoload -U zmv
 alias mmv='noglob zmv -W'
 
 compdef t=todo.sh
+zstyle ':completion:*:descriptions' format $'\e[35mFrom %d\e[m'
+zstyle ':completion:*' group-name ''
 
 ## vim:fdm=expr:fdl=0
 ## vim:fde=getline(v\:lnum)=~'^##'?'>'.(matchend(getline(v\:lnum),'##*')-2)\:'='
