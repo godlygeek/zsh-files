@@ -257,6 +257,9 @@ export SAVEHIST=5000                      # Lines of history to write out
 export HISTFILE=$ZDOTDIR/history/history  # File to which history will be saved
 export HOST=${HOST:-$HOSTNAME}            # Ensure that $HOST contains hostname
 
+# Save one history file per day
+( date=$(print -P "%D{%Y-%m-%d}"); [[ -a $HISTFILE.$date ]] || cp $HISTFILE{,.$date} )
+
 ### Dotfile (Re)Compilation
 # Allows dot files to be compiled into a pre-parsed form for use by zsh, which
 # lets them be sourced much faster - A good idea for any zsh file that's not
