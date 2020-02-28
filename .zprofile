@@ -19,3 +19,4 @@ setup_path
 export MANPATH="$MANPATH:"${PATH//bin/man}:${PATH//bin/share/man}
 
 [ -d /opt/bb/share/terminfo/ ] && export TERMINFO=/opt/bb/share/terminfo
+umask 022
