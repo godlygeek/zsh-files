@@ -363,16 +363,6 @@ if [[ -f $HOME/.vim/plugin/manpageview.vim ]]; then
     [[ $# -eq 0 ]] && return 1
     vim -R -c "Man $*" -c "silent! only"
   }
-
-  function info {
-    [[ $# -eq 1 ]] || return 1
-    vim -R -c "Man $1.i" -c "silent! only"
-  }
-
-  function perldoc {
-    [[ $# -eq 1 ]] || return 1
-    vim -R -c "Man $1.pl" -c "silent! only"
-  }
 fi
 
 #### Less and ls options
