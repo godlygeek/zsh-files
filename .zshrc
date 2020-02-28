@@ -254,7 +254,7 @@ fi
 
 export HISTSIZE=5500                      # Lines of history to save in mem
 export SAVEHIST=5000                      # Lines of history to write out
-export HISTFILE="$ZDOTDIR/.zsh_history"   # File to which history will be saved
+export HISTFILE=$ZDOTDIR/history/history  # File to which history will be saved
 export HOST=${HOST:-$HOSTNAME}            # Ensure that $HOST contains hostname
 
 ### Dotfile (Re)Compilation

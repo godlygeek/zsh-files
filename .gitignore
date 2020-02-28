@@ -3,4 +3,4 @@
 *.zwc.old
 /.zcache
 /.zcompdump
-/.zsh_history
+/history
