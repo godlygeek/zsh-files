@@ -279,51 +279,41 @@ bindkey -e                                       # Use emacs keybindings
 #bindkey -v                                     # Use vi keybindings
 
 if zmodload -i zsh/terminfo; then
-  [ -n "${terminfo[khome]}" ] &&
-  bindkey "${terminfo[khome]}" beginning-of-line # Home
-  [ -n "${terminfo[kend]}" ] &&
-  bindkey "${terminfo[kend]}"  end-of-line       # End
-  [ -n "${terminfo[kdch1]}" ] &&
-  bindkey "${terminfo[kdch1]}" delete-char       # Delete
+  # Make sure that the terminal is in application mode when zle is active,
+  # since only then will <Home> emit khome, etc
+  if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
+    function zle-line-init()   echoti smkx
+    function zle-line-finish() echoti rmkx
+    zle -N zle-line-init
+    zle -N zle-line-finish
+  fi
+else
+  typeset -A terminfo
 fi
 
-bindkey "\e[1~"   beginning-of-line              # Another Home
-bindkey "\e[4~"   end-of-line                    # Another End
-bindkey "\e[3~"   delete-char                    # Another Delete
+function bind_terminfo_key() bindkey ${terminfo[$1]:-$2} $3
+
+bind_terminfo_key khome "\e[1~" beginning-of-line     # Home
+bind_terminfo_key kend  "\e[4~" end-of-line           # End
+bind_terminfo_key kdch1 "\e[3~" delete-char           # Delete
+bind_terminfo_key kcbt  "\e[Z"  reverse-menu-complete # Shift-Tab
+
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+
+bind_terminfo_key kcuu1 "\e[A" up-line-or-beginning-search
+bind_terminfo_key kcud1 "\e[B" down-line-or-beginning-search
+
+bindkey "\e"      vi-cmd-mode
+
 bindkey "\e[1;5A" up-line-or-search              # Ctrl - Up in xterm
 bindkey "\e[1;5B" down-line-or-search            # Ctrl - Down in xterm
 bindkey "\e[1;5C" forward-word                   # Ctrl - Right in xterm
 bindkey "\e[1;5D" backward-word                  # Ctrl - Left in xterm
-bindkey "\eOa"    up-line-or-search              # Another ctrl-up
-bindkey "\eOb"    down-line-or-search            # Another ctrl-down
-bindkey "\eOc"    forward-word                   # Another possible ctrl-right
-bindkey "\eOd"    backward-word                  # Another possible ctrl-left
-bindkey "\e[Z"    reverse-menu-complete          # S-Tab menu completes backward
 bindkey " "       magic-space                    # Space expands history subst's
 bindkey "^@"      _history-complete-older        # C-Space to complete from hist
-
-bindkey "\et"       vi-find-next-char            # A-t char to find next char
-bindkey $'\xC3\xB4' vi-find-next-char            # Same, for my multibyte setup
-bindkey "\eT"       vi-find-prev-char            # A-T char to find prev char
-bindkey $'\xC3\x94' vi-find-prev-char            # Same, for my multibyte setup
-bindkey "\eq"       push-line-or-edit            # Combine lines or push
-bindkey $'\xC3\xB1' push-line-or-edit            # Same, for my multibyte setup
-
-# Up and down search only for   lines whose beginnings match the current line
-# up to the cursor.  If  possible, the cursor will move to the end of the line
-# after each history search, but will return to its original position before
-# actually searching.
-if autoloadable history-search-end; then
-  autoload -U history-search-end
-  zle -N history-beginning-search-backward-end history-search-end
-  zle -N history-beginning-search-forward-end history-search-end
-  bindkey "^[[A" history-beginning-search-backward-end
-  bindkey "^[[B" history-beginning-search-forward-end
-else
-  bindkey "^[[A" history-beginning-search-backward
-  bindkey "^[[B" history-beginning-search-forward
-fi
-
 bindkey "^I"      complete-word                  # Tab completes, never expands
                                                  # so expansion can be handled
                                                  # by a completer.
