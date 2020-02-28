@@ -266,9 +266,9 @@ if autoloadable zrecompile ; then
   zrecompile -pq $ZDOTDIR/.zshrc
   zrecompile -pq $ZDOTDIR/.zprofile
   zrecompile -pq $ZDOTDIR/.zcompdump
-  # We attempt to compile every file in .zfunctions whose name does not
+  # We attempt to compile every file in zfunctions whose name does not
   # contain a dot and does not end in a tilde.
-  zrecompile -pq $ZDOTDIR/.zfunctions.zwc $ZDOTDIR/.zfunctions/^(*~|*.*);
+  zrecompile -pq $ZDOTDIR/zfunctions.zwc $ZDOTDIR/zfunctions/^(*~|*.*);
 fi
 
 ### Key bindings

@@ -7,7 +7,7 @@ export EDITOR=vim
 # in the current $ZDOTDIR.
 ZDOTDIR=${ZDOTDIR:-$HOME/.zsh}
 
-fpath=($ZDOTDIR/.zfunctions $fpath) # Add a custom directory for my completion functions.
+fpath=($ZDOTDIR/zfunctions $fpath) # Add a custom directory for my completion functions.
 typeset -U fpath
 
 # "Outer Terminal" and "Screen Session ID" are only defined while in Gnu Screen
