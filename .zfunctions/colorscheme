@@ -17,25 +17,25 @@ function colorscheme {
   case $1 in
     light)
       # A light, black-on-grey colorscheme
-      local bgcolor="#EEEEEE"
-      local fgcolor="#000000"
-      local crcolor="rgb:8080/8080/c0c0" # Cursor color
-      local color0="#000000"  #Black
-      local color1="#E14B4B"  #Red
-      local color2="#32C832"  #green
-      local color3="#BBBB00"  #yellow
-      local color4="#3030FF"  #dark blue
-      local color5="#903090"  #magenta
-      local color6="#28B4B4"  #cyan
-      local color7="#B4B4B4"  #gray
-      local color8="#555555"  #light grey
-      local color9="#FF5555"  #light red
-      local color10="#5FAF00" #light green
-      local color11="#FFFF55" #light yellow
-      local color12="#0000AF" #light blue
-      local color13="#FF55FF" #light magenta
-      local color14="#55FFFF" #light cyan
-      local color15="#FFFFFF" #bright white
+      local bgcolor="rgb:eeee/eeee/eeee"
+      local fgcolor="rgb:0000/0000/0000"
+      local crcolor="rgb:8080/8080/c0c0" # cursor color
+      local color0="rgb:0000/0000/0000"  # black
+      local color1="rgb:e1e1/4b4b/4b4b"  # red
+      local color2="rgb:3232/c8c8/3232"  # green
+      local color3="rgb:bbbb/bbbb/0000"  # yellow
+      local color4="rgb:3030/3030/ffff"  # dark blue
+      local color5="rgb:9090/3030/9090"  # magenta
+      local color6="rgb:2828/b4b4/b4b4"  # cyan
+      local color7="rgb:b4b4/b4b4/b4b4"  # gray
+      local color8="rgb:5555/5555/5555"  # light gray
+      local color9="rgb:ffff/5555/5555"  # light red
+      local color10="rgb:5f5f/afaf/0000" # light green
+      local color11="rgb:ffff/b0b0/0000" # light yellow
+      local color12="rgb:0000/0000/afaf" # light blue
+      local color13="rgb:ffff/5555/ffff" # light magenta
+      local color14="rgb:0000/d7d7/ffff" # light cyan
+      local color15="rgb:ffff/ffff/ffff" # bright white
       ;;
     dark)
       # A dark, grey-on-black colorscheme
