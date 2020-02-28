@@ -436,9 +436,9 @@ zstyle ':completion:*' menu select=2
 # followed by files that do, followed last by files that are known to be binary
 # types that should probably not be edited.
 zstyle ':completion:*:*:(vi|vim):*:*' file-patterns \
-    '*~(*.o|*~|*.old|*.bak|*.pro|*.zwc|*.swp):regular-files' \
+    '*~(*.o|*~|*.old|*.bak|*.pro|*.zwc|*.swp|*.pyc):regular-files' \
     '(*~|*.bak|*.old):backup-files' \
-    '(*.o|*.pro|*.zwc|*.swp):hidden-files'
+    '(*.o|*.pro|*.zwc|*.swp|*.pyc):hidden-files'
 
 # Use colors in tab completion listings
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
