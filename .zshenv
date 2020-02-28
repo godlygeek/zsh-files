@@ -15,3 +15,6 @@ typeset -U fpath
 # terminal emulator launched from inside screen.  We unset them if the terminal
 # is set to anything that doesn't begin with screen.
 [[ "$TERM" != (screen*) ]] && unset INTERM && unset STY
+
+# When we're running in WSL, set DISPLAY
+[[ $(uname -r) =~ Microsoft && -z "$DISPLAY" ]] && export DISPLAY=127.0.0.1:0.0
